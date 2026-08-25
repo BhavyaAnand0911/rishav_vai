@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>@clicking_bad — Cinematic Real Estate Video</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0e0d;
+    --bg-panel: #12181a;
+    --bg-panel-2: #161d1f;
+    --teal: #f6f3ed;
+    --teal-bright: #c2cbd3;
+    --gold: #313851;
+    --ink: #ede9e0;
+    --ink-dim: #8a9490;
+    --ink-faint: #4d5654;
+    --line: rgba(237,233,224,0.08);
+    --radius: 2px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  ::selection { background: var(--gold); color: #0a0e0d; }
+
+  a { color: inherit; text-decoration: none; }
+
+  .display {
+    font-family: 'Bebas Neue', sans-serif;
+    letter-spacing: 0.02em;
+    line-height: 0.92;
+  }
+
+  .mono {
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.03em;
+  }
+
+  .eyebrow {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 500;
+    font-size: 0.72rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--teal-bright);
+  }
+
+  /* grain texture */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 999;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* ---------- timeline rail ---------- */
+  .rail {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 46px;
+    border-right: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 28px 0;
+    z-index: 100;
+    background: linear-gradient(180deg, rgba(10,14,13,0.6), rgba(10,14,13,0));
+  }
+  .rail-track {
+    flex: 1;
+    width: 1px;
+    background: var(--line);
+    position: relative;
+    margin-top: 16px;
+  }
+  .rail-fill {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    background: var(--gold);
+    height: 0%;
+    transition: height 0.1s linear;
+  }
+  .rail-code {
+    font-size: 0.6rem;
+    color: var(--ink-faint);
+    writing-mode: vertical-rl;
+    letter-spacing: 0.1em;
+  }
+  @media (max-width: 860px) { .rail { display: none; } }
+
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 clamp(24px, 6vw, 80px); }
+  .wrap-shift { padding-left: calc(clamp(24px, 6vw, 80px) + 46px); }
+  @media (max-width: 860px) { .wrap-shift { padding-left: clamp(24px, 6vw, 80px); } }
+
+  section { position: relative; padding: clamp(70px, 12vh, 140px) 0; }
+
+  .timecode {
+    font-size: 0.72rem;
+    color: var(--ink-faint);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 26px;
+  }
+  .timecode::before {
+    content: "";
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--gold);
+  }
+
+  /* ---------- nav ---------- */
+  nav {
+    position: fixed;
+    top: 0; right: 0; left: 0;
+    z-index: 200;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 22px clamp(24px, 6vw, 80px);
+    mix-blend-mode: normal;
+  }
+  .logo { font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 0.95rem; letter-spacing: 0.05em; }
+  .logo span { color: var(--gold); }
+  nav .cta {
+    border: 1px solid var(--teal);
+    padding: 9px 18px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    transition: all 0.25s ease;
+  }
+  nav .cta:hover { background: var(--teal); }
+
+  /* ---------- hero ---------- */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding-top: 100px;
+    padding-bottom: 60px;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1.3fr 0.7fr;
+    gap: 60px;
+    align-items: center;
+    width: 100%;
+  }
+  @media (max-width: 900px) { .hero-grid { grid-template-columns: 1fr; } }
+
+  .hero h1 {
+    font-size: clamp(3.4rem, 8vw, 6.4rem);
+    color: var(--ink);
+  }
+  .hero h1 em {
+    font-style: normal;
+    color: transparent;
+    -webkit-text-stroke: 1.5px var(--gold);
+  }
+  .hero p.sub {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 300;
+    font-size: clamp(1rem, 1.6vw, 1.25rem);
+    color: var(--ink-dim);
+    max-width: 480px;
+    margin-top: 24px;
+    line-height: 1.55;
+  }
+  .hero .stats {
+    display: flex;
+    gap: 40px;
+    margin-top: 46px;
+  }
+  .hero .stats div b {
+    display: block;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.1rem;
+    color: var(--teal-bright);
+  }
+  .hero .stats div span {
+    font-size: 0.68rem;
+    color: var(--ink-faint);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* vertical frame mockup — the signature element */
+  .frame-stack {
+    position: relative;
+    height: 560px;
+  }
+  .phone-frame {
+    position: absolute;
+    width: 210px;
+    aspect-ratio: 9/16;
+    border-radius: 18px;
+    border: 1px solid rgba(237,233,224,0.14);
+    overflow: hidden;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.55);
+  }
+  .phone-frame.f1 {
+    top: 0; right: 40px;
+    background: linear-gradient(200deg, #1a2f2f 0%, #0d1615 55%, #05100f 100%);
+    z-index: 2;
+  }
+  .phone-frame.f2 {
+    top: 90px; right: -10px;
+    background: linear-gradient(210deg, #2a2116 0%, #171310 60%, #0a0908 100%);
+    z-index: 1;
+    opacity: 0.75;
+    transform: scale(0.92);
+  }
+  .phone-frame .grain-line {
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(180deg, rgba(232,160,32,0.05) 0px, transparent 2px, transparent 4px);
+  }
+  .phone-frame .hud {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 16px;
+    background: linear-gradient(0deg, rgba(0,0,0,0.7), transparent);
+  }
+  .phone-frame .hud .tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--gold);
+    letter-spacing: 0.05em;
+  }
+  .phone-frame .hud .cap {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.85rem;
+    color: var(--ink);
+    margin-top: 4px;
+  }
+  .phone-frame .play {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+    width: 44px; height: 44px;
+    border: 1px solid rgba(237,233,224,0.5);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .phone-frame .play::after {
+    content: "";
+    border-style: solid;
+    border-width: 6px 0 6px 10px;
+    border-color: transparent transparent transparent var(--ink);
+    margin-left: 3px;
+  }
+
+  /* ---------- section heads ---------- */
+  .head-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 54px;
+    gap: 30px;
+    flex-wrap: wrap;
+  }
+  h2.display {
+    font-size: clamp(2.4rem, 5vw, 3.6rem);
+  }
+  .head-note {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.85rem;
+    color: var(--ink-dim);
+    max-width: 340px;
+    text-align: right;
+    line-height: 1.5;
+  }
+  @media (max-width: 700px) { .head-note { text-align: left; } }
+
+  /* ---------- reel grid ---------- */
+  .reel-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+  }
+  @media (max-width: 900px) { .reel-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 520px) { .reel-grid { grid-template-columns: 1fr; } }
+
+  .reel-card {
+    aspect-ratio: 9/16;
+    border-radius: 3px;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    cursor: pointer;
+  }
+  .reel-card .bg { position: absolute; inset: 0; }
+  .reel-card video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background: #0a0e0d;
+  }
+  .reel-card:nth-child(1) .bg { background: linear-gradient(160deg,#1f3535,#0a1211); }
+  .reel-card:nth-child(2) .bg { background: linear-gradient(160deg,#2e2415,#0f0c08); }
+  .reel-card:nth-child(3) .bg { background: linear-gradient(160deg,#1a2a2a,#080f0e); }
+  .reel-card:nth-child(4) .bg { background: linear-gradient(160deg,#2a2013,#0c0a07); }
+  .reel-card:nth-child(5) .bg { background: linear-gradient(160deg,#17302c,#070f0d); }
+  .reel-card:nth-child(6) .bg { background: linear-gradient(160deg,#2c2416,#0d0b08); }
+  .reel-card:nth-child(7) .bg { background: linear-gradient(160deg,#1e3232,#091211); }
+  .reel-card:nth-child(8) .bg { background: linear-gradient(160deg,#2a2416,#0c0a07); }
+
+  .reel-card .noise {
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(180deg, rgba(255,255,255,0.02) 0px, transparent 3px, transparent 6px);
+  }
+  .reel-card .top-tag {
+    position: absolute; top: 12px; left: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--gold);
+    background: rgba(10,14,13,0.55);
+    padding: 3px 7px;
+    border-radius: 2px;
+  }
+  .reel-card .info {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 14px;
+    background: linear-gradient(0deg, rgba(0,0,0,0.75), transparent);
+  }
+  .reel-card .info .cat {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--teal-bright);
+  }
+  .reel-card .info .title {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 500;
+    font-size: 0.92rem;
+    margin-top: 4px;
+    color: var(--ink);
+  }
+  .reel-card .play-mini {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+    width: 30px; height: 30px;
+    border: 1px solid rgba(237,233,224,0.45);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0.85;
+  }
+  .reel-card .play-mini::after {
+    content: "";
+    border-style: solid;
+    border-width: 4px 0 4px 7px;
+    border-color: transparent transparent transparent var(--ink);
+    margin-left: 2px;
+  }
+  .reel-card:hover .play-mini { opacity: 0; }
+
+  /* ---------- services ---------- */
+  .services {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    border-top: 1px solid var(--line);
+  }
+  @media (max-width: 760px) { .services { grid-template-columns: 1fr; } }
+  .service {
+    padding: 38px 34px;
+    border-bottom: 1px solid var(--line);
+    border-right: 1px solid var(--line);
+    position: relative;
+  }
+  .service:nth-child(2n) { border-right: none; }
+  @media (max-width: 760px) { .service { border-right: none !important; } }
+  .service .num { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--ink-faint); }
+  .service h3 {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 600;
+    font-size: 1.35rem;
+    margin: 14px 0 10px;
+  }
+  .service p {
+    font-size: 0.92rem;
+    color: var(--ink-dim);
+    line-height: 1.6;
+    max-width: 380px;
+  }
+  .service .tools {
+    margin-top: 16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .service .tools span {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    color: var(--gold);
+    border: 1px solid rgba(232,160,32,0.3);
+    padding: 4px 8px;
+    border-radius: 2px;
+  }
+
+  /* ---------- client work ---------- */
+  .case {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: 50px;
+    padding: 44px 0;
+    border-bottom: 1px solid var(--line);
+    align-items: start;
+  }
+  @media (max-width: 760px) { .case { grid-template-columns: 1fr; gap: 20px; } }
+  .case:first-of-type { padding-top: 0; }
+  .case .client-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2rem, 3.4vw, 2.9rem);
+    color: var(--ink);
+  }
+  .case .client-tag {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--teal-bright);
+    margin-top: 6px;
+  }
+  .case .desc {
+    font-size: 0.95rem;
+    color: var(--ink-dim);
+    line-height: 1.7;
+  }
+  .case .metrics {
+    display: flex;
+    gap: 30px;
+    margin-top: 18px;
+  }
+  .case .metrics div b {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem;
+    color: var(--gold);
+    display: block;
+  }
+  .case .metrics div span {
+    font-size: 0.62rem;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  /* ---------- contact ---------- */
+  .contact {
+    text-align: center;
+    padding-top: clamp(90px, 14vh, 160px);
+    padding-bottom: clamp(90px, 14vh, 160px);
+  }
+  .contact h2 {
+    font-size: clamp(3rem, 9vw, 7rem);
+  }
+  .contact p.sub {
+    font-family: 'Oswald', sans-serif;
+    color: var(--ink-dim);
+    margin: 20px auto 46px;
+    max-width: 420px;
+  }
+  .contact-links {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .contact-links a {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border: 1px solid var(--teal);
+    padding: 14px 26px;
+    transition: all 0.25s ease;
+  }
+  .contact-links a:hover { background: var(--teal); }
+  .contact-links a.primary { background: var(--gold); border-color: var(--gold); color: #0a0e0d; font-weight: 500; }
+  .contact-links a.primary:hover { opacity: 0.85; background: var(--gold); }
+
+  footer {
+    border-top: 1px solid var(--line);
+    padding: 24px clamp(24px, 6vw, 80px);
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.65rem;
+    color: var(--ink-faint);
+    letter-spacing: 0.05em;
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+    html { scroll-behavior: auto; }
+  }
+
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 3px;
+  }
+</style>
+</head>
+<body>
+
+<div class="rail">
+  <span class="rail-code mono">00:00:00</span>
+  <div class="rail-track"><div class="rail-fill" id="railFill"></div></div>
+  <span class="rail-code mono">END</span>
+</div>
+
+<nav>
+  <div class="logo">CLICKING<span>_</span>BAD</div>
+  <a href="#contact" class="cta">Start a project</a>
+</nav>
+
+<main class="wrap-shift">
+
+  <!-- HERO -->
+  <section class="hero wrap">
+    <div class="hero-grid">
+      <div>
+        <div class="eyebrow">Real estate &amp; cinematic video · Dehradun / DFW</div>
+        <h1 class="display" style="margin-top:14px;">SHOT LIKE<br>A LISTING<br><em>WORTH LIVING</em> IN</h1>
+        <p class="sub">@clicking_bad — cinematic real estate reels, brand films, and event coverage. Dark grade, no faces, golden‑hour light. Built for the scroll, cut for the close.</p>
+        <div class="stats">
+          <div><b>9:16</b><span>Native vertical</span></div>
+          <div><b>25+</b><span>Teams shot, ice hockey india</span></div>
+          <div><b>0</b><span>Faces on camera</span></div>
+        </div>
+      </div>
+      <div class="frame-stack">
+        <div class="phone-frame f2">
+          <div class="grain-line"></div>
+          <div class="play"></div>
+          <div class="hud"><div class="tag">DAY 8 — REEL 13</div><div class="cap">Exterior → interior fly‑through</div></div>
+        </div>
+        <div class="phone-frame f1">
+          <div class="grain-line"></div>
+          <div class="play"></div>
+          <div class="hud"><div class="tag">CLIENT CUT</div><div class="cap">Option Period, explained</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SHOWREEL -->
+  <section id="work" class="wrap reveal">
+    <div class="timecode mono">00:00:14 — SHOWREEL</div>
+    <div class="head-row">
+      <h2 class="display">RECENT<br>CUTS</h2>
+      <p class="head-note">A working sample of the reel formats in rotation — listing walkthroughs, market explainers, and brand spots.</p>
+    </div>
+    <div class="reel-grid">
+      <div class="reel-card"><video src="Reel%201.mp4" muted loop playsinline preload="metadata" aria-label="Celina vs. Prosper video"></video><div class="noise"></div><div class="top-tag">9:16</div><div class="play-mini"></div><div class="info"><div class="cat">Listing</div><div class="title">Celina vs. Prosper</div></div></div>
+      <div class="reel-card"><video src="Reel%202.mp4" muted loop playsinline preload="metadata" aria-label="Option Period, TX video"></video><div class="noise"></div><div class="top-tag">9:16</div><div class="play-mini"></div><div class="info"><div class="cat">Explainer</div><div class="title">Option Period, TX</div></div></div>
+      <div class="reel-card"><video src="Reel%203.mp4" muted loop playsinline preload="metadata" aria-label="Fairway-adjacent, Plano video"></video><div class="noise"></div><div class="top-tag">9:16</div><div class="play-mini"></div><div class="info"><div class="cat">Listing</div><div class="title">Fairway‑adjacent, Plano</div></div></div>
+      <div class="reel-card"><video src="Reel%204.mp4" muted loop playsinline preload="metadata" aria-label="Property Tax, Broken Down video"></video><div class="noise"></div><div class="top-tag">9:16</div><div class="play-mini"></div><div class="info"><div class="cat">Data</div><div class="title">Property Tax, Broken Down</div></div></div>
+      <div class="reel-card"><div class="bg"></div><div class="noise"></div><div class="top-tag">9:16</div><div class="play-mini"></div><div class="info"><div class="cat">Brand</div><div class="title">Opening Ceremony Teaser</div></div></div>
+      <div class="reel-card"><div class="bg"></div><div class="noise"></div><div class="top-tag">9:16</div><div class="play-mini"></div><div class="info"><div class="cat">Sports</div><div class="title">Senior Nationals Hype</div></div></div>
+      <div class="reel-card"><div class="bg"></div><div class="noise"></div><div class="top-tag">9:16</div><div class="play-mini"></div><div class="info"><div class="cat">Ad</div><div class="title">Foosball, Reimagined</div></div></div>
+      <div class="reel-card"><div class="bg"></div><div class="noise"></div><div class="top-tag">9:16</div><div class="play-mini"></div><div class="info"><div class="cat">Explainer</div><div class="title">LLC Investing, Simplified</div></div></div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services" class="reveal">
+    <div class="wrap">
+      <div class="timecode mono">00:01:02 — SERVICES</div>
+      <div class="head-row">
+        <h2 class="display">WHAT I<br>CUT</h2>
+        <p class="head-note">Four lanes, one visual language — dark, teal‑and‑gold, faceless, built to hold attention past the third second.</p>
+      </div>
+    </div>
+    <div class="services">
+      <div class="service">
+        <span class="num mono">01</span>
+        <h3>Real Estate Reels</h3>
+        <p>Listing walkthroughs, market explainers, and educational shorts for realtors — scripted, storyboarded, and cut for retention.</p>
+        <div class="tools"><span>PREMIERE</span><span>AFTER EFFECTS</span><span>SWISHY AI</span></div>
+      </div>
+      <div class="service">
+        <span class="num mono">02</span>
+        <h3>Cinematic Marketing</h3>
+        <p>Brand films and property ads with AI‑generated establishing shots, transitions, and motion graphics layered over real footage.</p>
+        <div class="tools"><span>KLING AI</span><span>FIREFLY</span><span>AFTER EFFECTS</span></div>
+      </div>
+      <div class="service">
+        <span class="num mono">03</span>
+        <h3>Sports &amp; Event Coverage</h3>
+        <p>Multi‑team tournament shoots — interviews, practice footage, and hype reels delivered on tight event‑day turnarounds.</p>
+        <div class="tools"><span>PREMIERE</span><span>SWISHY AI</span></div>
+      </div>
+      <div class="service">
+        <span class="num mono">04</span>
+        <h3>AI‑Assisted Production</h3>
+        <p>Prompt‑engineered video and image generation for shots that aren't practical to film — face‑swaps, day‑to‑night transforms, product reveals.</p>
+        <div class="tools"><span>KLING AI</span><span>FIREFLY</span><span>SWISHY AI</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CLIENT WORK -->
+  <section id="clients" class="wrap reveal">
+    <div class="timecode mono">00:02:18 — CLIENT WORK</div>
+    <div class="head-row">
+      <h2 class="display">SELECTED<br>PROJECTS</h2>
+      <p class="head-note">A few of the productions on record — full case studies available on request.</p>
+    </div>
+
+    <div class="case">
+      <div>
+        <div class="client-name display">Ishu Nagpal</div>
+        <div class="client-tag">DFW Realtor · Brand &amp; Ad Campaign</div>
+      </div>
+      <div>
+        <p class="desc">A full AI‑generated video ad built around foosball champion Brandon Munoz, plus a property‑tax educational reel with animated bar charts and balance‑scale graphics matched to brand colors.</p>
+        <div class="metrics">
+          <div><b>5</b><span>Scenes storyboarded</span></div>
+          <div><b>2</b><span>Deliverables shipped</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="case">
+      <div>
+        <div class="client-name display">Ice Hockey India</div>
+        <div class="client-tag">Senior Nationals · Event Videography</div>
+      </div>
+      <div>
+        <p class="desc">Hype reels and interview coverage across a 25‑team championship. Animated question‑card overlays built in Swishy AI, with full asset tracking per state team on a tight event‑day schedule.</p>
+        <div class="metrics">
+          <div><b>25</b><span>Teams covered</span></div>
+          <div><b>1</b><span>Event, wall‑to‑wall</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="case">
+      <div>
+        <div class="client-name display">@clicking_bad</div>
+        <div class="client-tag">In‑house · DFW Market Series</div>
+      </div>
+      <div>
+        <p class="desc">A recurring educational series for the North Texas market — Celina vs. Prosper, Option Period explainers, and golf‑course‑proximity listings, all in one consistent dark cinematic system.</p>
+        <div class="metrics">
+          <div><b>9:16</b><span>Native format</span></div>
+          <div><b>0</b><span>Faces, by design</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="contact reveal">
+    <div class="timecode mono" style="justify-content:center;">END — LET'S CUT SOMETHING</div>
+    <h2 class="display">GOT A<br>LISTING?</h2>
+    <p class="sub">Send the brief, the address, or just the vibe. Turnarounds built for launch‑week timelines.</p>
+    <div class="contact-links">
+      <a href="https://instagram.com/clicking_bad" class="primary" target="_blank" rel="noopener">Instagram</a>
+      <a href="#" target="_blank" rel="noopener">WhatsApp</a>
+      <a href="#">Email</a>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <span>© 2026 CLICKING_BAD</span>
+  <span>DEHRADUN, INDIA</span>
+</footer>
+
+<script>
+  // scroll progress on the timeline rail
+  const fill = document.getElementById('railFill');
+  function updateRail() {
+    const h = document.documentElement;
+    const scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+    if (fill) fill.style.height = Math.min(100, Math.max(0, scrolled)) + '%';
+  }
+  document.addEventListener('scroll', updateRail);
+  updateRail();
+
+  // reveal on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Reels play only while their card is hovered.
+  document.querySelectorAll('.reel-card').forEach(card => {
+    const video = card.querySelector('video');
+    if (!video) return;
+    card.addEventListener('mouseenter', () => video.play().catch(() => {}));
+    card.addEventListener('mouseleave', () => video.pause());
+  });
+</script>
+
+</body>
+</html>
