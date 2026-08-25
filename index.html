@@ -366,26 +366,56 @@
     margin-top: 4px;
     color: var(--ink);
   }
-  .reel-card .play-mini {
-    position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
-    width: 30px; height: 30px;
-    border: 1px solid rgba(237,233,224,0.45);
+  .reel-card .reel-toggle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    border: 1px solid rgba(237, 233, 224, 0.45);
     border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    opacity: 0.85;
+    background: rgba(10, 14, 13, 0.55);
+    color: inherit;
+    cursor: pointer;
+    opacity: 0;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.25s ease, border-color 0.25s ease, background 0.25s ease;
   }
-  .reel-card .play-mini::after {
+  .reel-card:hover .reel-toggle {
+    opacity: 1;
+  }
+  .reel-toggle:hover {
+    border-color: rgba(237, 233, 224, 0.75);
+    background: rgba(10, 14, 13, 0.72);
+  }
+  .reel-toggle-icon::after {
     content: "";
+    display: block;
     border-style: solid;
     border-width: 4px 0 4px 7px;
     border-color: transparent transparent transparent var(--ink);
     margin-left: 2px;
   }
-  .reel-card:hover .play-mini { opacity: 0; }
-  .reel-card.is-loading .play-mini {
-    opacity: 0.85;
+  .reel-card.is-playing .reel-toggle-icon::after {
+    width: 3px;
+    height: 10px;
+    margin-left: 0;
+    border: none;
+    background: var(--ink);
+    box-shadow: 5px 0 0 var(--ink);
+  }
+  .reel-card.is-loading .reel-toggle {
+    opacity: 1;
     border-color: var(--gold);
     animation: reel-pulse 0.9s ease-in-out infinite;
+  }
+  @media (hover: none) {
+    .reel-card .reel-toggle { opacity: 1; }
   }
   @keyframes reel-pulse {
     0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.85; }
@@ -425,6 +455,52 @@
     inset: 0;
     pointer-events: none;
     background: repeating-linear-gradient(180deg, rgba(255,255,255,0.02) 0px, transparent 3px, transparent 6px);
+  }
+  .longform-toggle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 52px;
+    height: 52px;
+    padding: 0;
+    border: 1px solid rgba(237, 233, 224, 0.45);
+    border-radius: 50%;
+    background: rgba(10, 14, 13, 0.55);
+    color: inherit;
+    cursor: pointer;
+    opacity: 0;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+  }
+  .longform-frame:hover .longform-toggle {
+    opacity: 1;
+  }
+  .longform-toggle:hover {
+    border-color: rgba(237, 233, 224, 0.75);
+    background: rgba(10, 14, 13, 0.72);
+  }
+  .longform-toggle-icon::after {
+    content: "";
+    display: block;
+    border-style: solid;
+    border-width: 8px 0 8px 14px;
+    border-color: transparent transparent transparent var(--ink);
+    margin-left: 4px;
+  }
+  .longform-frame.is-playing .longform-toggle-icon::after {
+    width: 4px;
+    height: 16px;
+    margin-left: 0;
+    border: none;
+    background: var(--ink);
+    box-shadow: 8px 0 0 var(--ink);
+  }
+  @media (hover: none) {
+    .longform-toggle { opacity: 1; }
   }
   .longform-meta {
     display: flex;
@@ -608,7 +684,7 @@
     .reveal { opacity: 1; transform: none; transition: none; }
     .reel-card { transition: none; will-change: auto; }
     .reel-card:hover { transform: none; box-shadow: none; }
-    .reel-card.is-loading .play-mini { animation: none; }
+    .reel-card.is-loading .reel-toggle { animation: none; }
     .phone-frame { transition: none; }
     html { scroll-behavior: auto; }
   }
@@ -675,14 +751,14 @@
       <p class="head-note">A working sample of the reel formats in rotation — listing walkthroughs, market explainers, and brand spots.</p>
     </div>
     <div class="reel-grid">
-      <div class="reel-card"><video src="Reel%201.mp4"   loop playsinline preload="none" aria-label="Celina vs. Prosper video"></video><div class="noise"></div><div class="play-mini"></div><div class="info"><div class="cat">Listing</div><div class="title">Celina vs. Prosper</div></div></div>
-      <div class="reel-card"><video src="Reel%202.mp4"  loop playsinline preload="none" aria-label="Option Period, TX video"></video><div class="noise"></div><div class="play-mini"></div><div class="info"><div class="cat">Explainer</div><div class="title">Option Period, TX</div></div></div>
-      <div class="reel-card"><video src="Reel%203.mp4"  loop playsinline preload="none" aria-label="Fairway-adjacent, Plano video"></video><div class="noise"></div><div class="play-mini"></div><div class="info"><div class="cat">Listing</div><div class="title">Fairway‑adjacent, Plano</div></div></div>
-      <div class="reel-card"><video src="Reel%204.mp4"  loop playsinline preload="none" aria-label="Property Tax, Broken Down video"></video><div class="noise"></div><div class="play-mini"></div><div class="info"><div class="cat">Data</div><div class="title">Property Tax, Broken Down</div></div></div>
-      <div class="reel-card"><video src="Reel%205.mp4"  loop playsinline preload="none" aria-label="Opening Ceremony Teaser video"></video><div class="noise"></div><div class="play-mini"></div><div class="info"><div class="cat">Brand</div><div class="title">Opening Ceremony Teaser</div></div></div>
-      <div class="reel-card"><video src="Reel%206.mp4"  loop playsinline preload="none" aria-label="Senior Nationals Hype video"></video><div class="noise"></div><div class="play-mini"></div><div class="info"><div class="cat">Sports</div><div class="title">Senior Nationals Hype</div></div></div>
-      <div class="reel-card"><video src="Reel%207.mp4"  loop playsinline preload="none" aria-label="Foosball, Reimagined video"></video><div class="noise"></div><div class="play-mini"></div><div class="info"><div class="cat">Ad</div><div class="title">Foosball, Reimagined</div></div></div>
-      <div class="reel-card"><video src="Reel%208.mp4"  loop playsinline preload="none" aria-label="LLC Investing, Simplified video"></video><div class="noise"></div><div class="play-mini"></div><div class="info"><div class="cat">Explainer</div><div class="title">LLC Investing, Simplified</div></div></div>
+      <div class="reel-card"><video src="Reel%201.mp4"   loop playsinline preload="none" aria-label="Celina vs. Prosper video"></video><div class="noise"></div><button type="button" class="reel-toggle" aria-label="Play video"><span class="reel-toggle-icon"></span></button><div class="info"><div class="cat">Listing</div><div class="title">Celina vs. Prosper</div></div></div>
+      <div class="reel-card"><video src="Reel%202.mp4"  loop playsinline preload="none" aria-label="Option Period, TX video"></video><div class="noise"></div><button type="button" class="reel-toggle" aria-label="Play video"><span class="reel-toggle-icon"></span></button><div class="info"><div class="cat">Explainer</div><div class="title">Option Period, TX</div></div></div>
+      <div class="reel-card"><video src="Reel%203.mp4"  loop playsinline preload="none" aria-label="Fairway-adjacent, Plano video"></video><div class="noise"></div><button type="button" class="reel-toggle" aria-label="Play video"><span class="reel-toggle-icon"></span></button><div class="info"><div class="cat">Listing</div><div class="title">Fairway‑adjacent, Plano</div></div></div>
+      <div class="reel-card"><video src="Reel%204.mp4"  loop playsinline preload="none" aria-label="Property Tax, Broken Down video"></video><div class="noise"></div><button type="button" class="reel-toggle" aria-label="Play video"><span class="reel-toggle-icon"></span></button><div class="info"><div class="cat">Data</div><div class="title">Property Tax, Broken Down</div></div></div>
+      <div class="reel-card"><video src="Reel%205.mp4"  loop playsinline preload="none" aria-label="Opening Ceremony Teaser video"></video><div class="noise"></div><button type="button" class="reel-toggle" aria-label="Play video"><span class="reel-toggle-icon"></span></button><div class="info"><div class="cat">Brand</div><div class="title">Opening Ceremony Teaser</div></div></div>
+      <div class="reel-card"><video src="Reel%206.mp4"  loop playsinline preload="none" aria-label="Senior Nationals Hype video"></video><div class="noise"></div><button type="button" class="reel-toggle" aria-label="Play video"><span class="reel-toggle-icon"></span></button><div class="info"><div class="cat">Sports</div><div class="title">Senior Nationals Hype</div></div></div>
+      <div class="reel-card"><video src="Reel%207.mp4"  loop playsinline preload="none" aria-label="Foosball, Reimagined video"></video><div class="noise"></div><button type="button" class="reel-toggle" aria-label="Play video"><span class="reel-toggle-icon"></span></button><div class="info"><div class="cat">Ad</div><div class="title">Foosball, Reimagined</div></div></div>
+      <div class="reel-card"><video src="Reel%208.mp4"  loop playsinline preload="none" aria-label="LLC Investing, Simplified video"></video><div class="noise"></div><button type="button" class="reel-toggle" aria-label="Play video"><span class="reel-toggle-icon"></span></button><div class="info"><div class="cat">Explainer</div><div class="title">LLC Investing, Simplified</div></div></div>
     </div>
   </section>
 
@@ -696,7 +772,8 @@
     <div class="longform-stack">
       <article class="longform-item">
         <div class="longform-frame">
-          <video src="Reel%209%20-%20Long%20form.mp4" controls playsinline preload="none" aria-label="Long form video 9"></video>
+          <video src="Reel%209%20-%20Long%20form.mp4" playsinline preload="none" aria-label="Long form video 9"></video>
+          <button type="button" class="longform-toggle" aria-label="Play video"><span class="longform-toggle-icon"></span></button>
           <div class="noise"></div>
         </div>
         <div class="longform-meta">
@@ -710,7 +787,8 @@
       </article>
       <article class="longform-item">
         <div class="longform-frame">
-          <video src="Reel%2010-%20Long%20form.mp4" controls playsinline preload="none" aria-label="Long form video 10"></video>
+          <video src="Reel%2010-%20Long%20form.mp4" playsinline preload="none" aria-label="Long form video 10"></video>
+          <button type="button" class="longform-toggle" aria-label="Play video"><span class="longform-toggle-icon"></span></button>
           <div class="noise"></div>
         </div>
         <div class="longform-meta">
@@ -724,7 +802,8 @@
       </article>
       <article class="longform-item">
         <div class="longform-frame">
-          <video src="Reel%2011%20-%20Long%20form.mp4" controls playsinline preload="none" aria-label="Long form video 11"></video>
+          <video src="Reel%2011%20-%20Long%20form.mp4" playsinline preload="none" aria-label="Long form video 11"></video>
+          <button type="button" class="longform-toggle" aria-label="Play video"><span class="longform-toggle-icon"></span></button>
           <div class="noise"></div>
         </div>
         <div class="longform-meta">
@@ -955,7 +1034,7 @@
     playFront();
   })();
 
-  // Reels: preload as the grid nears view, play on hover when ready.
+  // Reels: preload as the grid nears view, click play/pause on hover toggle.
   const reelCards = [...document.querySelectorAll('.reel-card')];
   const reelVideos = reelCards.map(card => card.querySelector('video')).filter(Boolean);
   let reelPreloadStarted = false;
@@ -986,33 +1065,40 @@
     reelPreloadObserver.observe(reelGrid);
   }
 
-  function playReel(card, video) {
-    prepareReelVideo(video);
+  function initVideoToggle(container, btn) {
+    const video = container.querySelector('video');
+    if (!video || !btn) return;
 
-    const begin = () => {
-      video.play()
-        .then(() => card.classList.remove('is-loading'))
-        .catch(() => card.classList.remove('is-loading'));
-    };
-
-    if (video.readyState >= 2) {
-      begin();
-    } else {
-      card.classList.add('is-loading');
-      video.addEventListener('canplay', begin, { once: true });
+    function syncState() {
+      container.classList.toggle('is-playing', !video.paused && !video.ended);
+      btn.setAttribute('aria-label', video.paused || video.ended ? 'Play video' : 'Pause video');
+      container.classList.remove('is-loading');
     }
+
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      prepareReelVideo(video);
+
+      if (video.paused || video.ended) {
+        if (video.ended) video.currentTime = 0;
+        const begin = () => video.play().then(syncState).catch(syncState);
+        if (video.readyState >= 2) begin();
+        else {
+          container.classList.add('is-loading');
+          video.addEventListener('canplay', begin, { once: true });
+        }
+      } else {
+        video.pause();
+        syncState();
+      }
+    });
+
+    video.addEventListener('play', syncState);
+    video.addEventListener('pause', syncState);
+    video.addEventListener('ended', syncState);
   }
 
-  reelCards.forEach(card => {
-    const video = card.querySelector('video');
-    if (!video) return;
-
-    card.addEventListener('mouseenter', () => playReel(card, video));
-    card.addEventListener('mouseleave', () => {
-      card.classList.remove('is-loading');
-      video.pause();
-    });
-  });
+  reelCards.forEach(card => initVideoToggle(card, card.querySelector('.reel-toggle')));
 
   // Long form: stagger preload when section nears view.
   const longformSection = document.getElementById('longform');
@@ -1030,6 +1116,10 @@
     }, { rootMargin: '400px 0px', threshold: 0 });
     longformObserver.observe(longformSection);
   }
+
+  document.querySelectorAll('.longform-frame').forEach(frame => {
+    initVideoToggle(frame, frame.querySelector('.longform-toggle'));
+  });
 </script>
 
 </body>
