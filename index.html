@@ -306,6 +306,14 @@
     overflow: hidden;
     border: 1px solid var(--line);
     cursor: pointer;
+    transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+    will-change: transform;
+  }
+  .reel-card:hover {
+    transform: scale(1.06) translateY(-8px);
+    z-index: 2;
+    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.5);
+    border-color: rgba(237, 233, 224, 0.18);
   }
   .reel-card .bg { position: absolute; inset: 0; }
   .reel-card video {
@@ -517,6 +525,8 @@
 
   @media (prefers-reduced-motion: reduce) {
     .reveal { opacity: 1; transform: none; transition: none; }
+    .reel-card { transition: none; will-change: auto; }
+    .reel-card:hover { transform: none; box-shadow: none; }
     html { scroll-behavior: auto; }
   }
 
@@ -581,10 +591,10 @@
       <div class="reel-card"><video src="Reel%202.mp4"  loop playsinline preload="metadata" aria-label="Option Period, TX video"></video><div class="noise"></div><div class="top-tag">9:16</div><div class="play-mini"></div><div class="info"><div class="cat">Explainer</div><div class="title">Option Period, TX</div></div></div>
       <div class="reel-card"><video src="Reel%203.mp4"  loop playsinline preload="metadata" aria-label="Fairway-adjacent, Plano video"></video><div class="noise"></div><div class="top-tag">9:16</div><div class="play-mini"></div><div class="info"><div class="cat">Listing</div><div class="title">Fairway‑adjacent, Plano</div></div></div>
       <div class="reel-card"><video src="Reel%204.mp4"  loop playsinline preload="metadata" aria-label="Property Tax, Broken Down video"></video><div class="noise"></div><div class="top-tag">9:16</div><div class="play-mini"></div><div class="info"><div class="cat">Data</div><div class="title">Property Tax, Broken Down</div></div></div>
-      <div class="reel-card"><div class="bg"></div><div class="noise"></div><div class="top-tag">9:16</div><div class="play-mini"></div><div class="info"><div class="cat">Brand</div><div class="title">Opening Ceremony Teaser</div></div></div>
-      <div class="reel-card"><div class="bg"></div><div class="noise"></div><div class="top-tag">9:16</div><div class="play-mini"></div><div class="info"><div class="cat">Sports</div><div class="title">Senior Nationals Hype</div></div></div>
-      <div class="reel-card"><div class="bg"></div><div class="noise"></div><div class="top-tag">9:16</div><div class="play-mini"></div><div class="info"><div class="cat">Ad</div><div class="title">Foosball, Reimagined</div></div></div>
-      <div class="reel-card"><div class="bg"></div><div class="noise"></div><div class="top-tag">9:16</div><div class="play-mini"></div><div class="info"><div class="cat">Explainer</div><div class="title">LLC Investing, Simplified</div></div></div>
+      <div class="reel-card"><video src="Reel%205.mp4" loop playsinline preload="metadata" aria-label="Opening Ceremony Teaser video"></video><div class="noise"></div><div class="top-tag">9:16</div><div class="play-mini"></div><div class="info"><div class="cat">Brand</div><div class="title">Opening Ceremony Teaser</div></div></div>
+      <div class="reel-card"><video src="Reel%206.mp4" loop playsinline preload="metadata" aria-label="Senior Nationals Hype video"></video><div class="noise"></div><div class="top-tag">9:16</div><div class="play-mini"></div><div class="info"><div class="cat">Sports</div><div class="title">Senior Nationals Hype</div></div></div>
+      <div class="reel-card"><video src="Reel%207.mp4" loop playsinline preload="metadata" aria-label="Foosball, Reimagined video"></video><div class="noise"></div><div class="top-tag">9:16</div><div class="play-mini"></div><div class="info"><div class="cat">Ad</div><div class="title">Foosball, Reimagined</div></div></div>
+      <div class="reel-card"><video src="Reel%208.mp4" loop playsinline preload="metadata" aria-label="LLC Investing, Simplified video"></video><div class="noise"></div><div class="top-tag">9:16</div><div class="play-mini"></div><div class="info"><div class="cat">Explainer</div><div class="title">LLC Investing, Simplified</div></div></div>
     </div>
   </section>
 
@@ -683,8 +693,8 @@
     <p class="sub">Send the brief, the address, or just the vibe. Turnarounds built for launch‑week timelines.</p>
     <div class="contact-links">
       <a href="https://instagram.com/clicking_bad" class="primary" target="_blank" rel="noopener">Instagram</a>
-      <a href="#" target="_blank" rel="noopener">WhatsApp</a>
-      <a href="#">Email</a>
+      <a href="https://wa.me/917351887187" target="_blank" rel="noopener">WhatsApp</a>
+      <a href="mailto:rishabh007351@gmail.com">Email</a>
     </div>
   </section>
 
