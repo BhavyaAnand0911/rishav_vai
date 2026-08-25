@@ -863,7 +863,7 @@
   }, { threshold: 0.12 });
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-  // Hero stack: 3 reels auto-play, rotate to back when finished.
+  // Hero stack: 3 reels rotate every 5s, resume where each left off.
   (function initHeroStack() {
     const stack = document.getElementById('heroStack');
     if (!stack) return;
@@ -875,7 +875,16 @@
     }));
 
     let rotating = false;
+    let rotateTimer = null;
     const ROTATE_MS = 650;
+    const PLAY_SECONDS = 5;
+
+    function clearRotateTimer() {
+      if (rotateTimer) {
+        clearTimeout(rotateTimer);
+        rotateTimer = null;
+      }
+    }
 
     function applySlots() {
       frames.forEach(f => { f.el.dataset.slot = f.slot; });
@@ -885,31 +894,51 @@
       return frames.find(f => f.slot === 0);
     }
 
+    function scheduleRotate() {
+      clearRotateTimer();
+      const front = getFrontFrame();
+      if (!front?.video) return;
+
+      const { video } = front;
+      const remaining = video.duration - video.currentTime;
+      const delay = Number.isFinite(remaining) && remaining > 0
+        ? Math.min(PLAY_SECONDS * 1000, remaining * 1000)
+        : PLAY_SECONDS * 1000;
+
+      rotateTimer = setTimeout(rotateStack, delay);
+    }
+
     function playFront() {
       const front = getFrontFrame();
       if (!front || !front.video) return;
 
       frames.forEach(f => {
-        if (f !== front) {
-          f.video.pause();
-          f.video.currentTime = 0;
-        }
+        if (f !== front) f.video.pause();
       });
 
-      const start = () => front.video.play().catch(() => {});
-      if (front.video.readyState >= 2) start();
-      else front.video.addEventListener('canplay', start, { once: true });
+      const { video } = front;
+      const start = () => {
+        if (video.duration && video.currentTime >= video.duration - 0.05) {
+          video.currentTime = 0;
+        }
+        video.play()
+          .then(() => scheduleRotate())
+          .catch(() => {});
+      };
+
+      if (video.readyState >= 2) start();
+      else video.addEventListener('canplay', start, { once: true });
     }
 
     function rotateStack() {
       if (rotating) return;
       rotating = true;
+      clearRotateTimer();
 
       const front = getFrontFrame();
       if (front) {
         front.el.classList.add('is-exiting');
         front.video.pause();
-        front.video.currentTime = 0;
       }
 
       frames.forEach(f => { f.slot = (f.slot - 1 + 3) % 3; });
@@ -921,11 +950,6 @@
         playFront();
       }, ROTATE_MS);
     }
-
-    frames.forEach(f => {
-      if (!f.video) return;
-      f.video.addEventListener('ended', rotateStack);
-    });
 
     applySlots();
     playFront();
