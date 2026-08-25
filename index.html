@@ -381,6 +381,15 @@
     margin-left: 2px;
   }
   .reel-card:hover .play-mini { opacity: 0; }
+  .reel-card.is-loading .play-mini {
+    opacity: 0.85;
+    border-color: var(--gold);
+    animation: reel-pulse 0.9s ease-in-out infinite;
+  }
+  @keyframes reel-pulse {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.85; }
+    50% { transform: translate(-50%, -50%) scale(1.12); opacity: 0.45; }
+  }
 
   /* ---------- services ---------- */
   .services {
@@ -527,6 +536,7 @@
     .reveal { opacity: 1; transform: none; transition: none; }
     .reel-card { transition: none; will-change: auto; }
     .reel-card:hover { transform: none; box-shadow: none; }
+    .reel-card.is-loading .play-mini { animation: none; }
     html { scroll-behavior: auto; }
   }
 
@@ -587,14 +597,14 @@
       <p class="head-note">A working sample of the reel formats in rotation — listing walkthroughs, market explainers, and brand spots.</p>
     </div>
     <div class="reel-grid">
-      <div class="reel-card"><video src="Reel%201.mp4"  loop playsinline preload="metadata" aria-label="Celina vs. Prosper video"></video><div class="noise"></div><div class="top-tag">9:16</div><div class="play-mini"></div><div class="info"><div class="cat">Listing</div><div class="title">Celina vs. Prosper</div></div></div>
-      <div class="reel-card"><video src="Reel%202.mp4"  loop playsinline preload="metadata" aria-label="Option Period, TX video"></video><div class="noise"></div><div class="top-tag">9:16</div><div class="play-mini"></div><div class="info"><div class="cat">Explainer</div><div class="title">Option Period, TX</div></div></div>
-      <div class="reel-card"><video src="Reel%203.mp4"  loop playsinline preload="metadata" aria-label="Fairway-adjacent, Plano video"></video><div class="noise"></div><div class="top-tag">9:16</div><div class="play-mini"></div><div class="info"><div class="cat">Listing</div><div class="title">Fairway‑adjacent, Plano</div></div></div>
-      <div class="reel-card"><video src="Reel%204.mp4"  loop playsinline preload="metadata" aria-label="Property Tax, Broken Down video"></video><div class="noise"></div><div class="top-tag">9:16</div><div class="play-mini"></div><div class="info"><div class="cat">Data</div><div class="title">Property Tax, Broken Down</div></div></div>
-      <div class="reel-card"><video src="Reel%205.mp4" loop playsinline preload="metadata" aria-label="Opening Ceremony Teaser video"></video><div class="noise"></div><div class="top-tag">9:16</div><div class="play-mini"></div><div class="info"><div class="cat">Brand</div><div class="title">Opening Ceremony Teaser</div></div></div>
-      <div class="reel-card"><video src="Reel%206.mp4" loop playsinline preload="metadata" aria-label="Senior Nationals Hype video"></video><div class="noise"></div><div class="top-tag">9:16</div><div class="play-mini"></div><div class="info"><div class="cat">Sports</div><div class="title">Senior Nationals Hype</div></div></div>
-      <div class="reel-card"><video src="Reel%207.mp4" loop playsinline preload="metadata" aria-label="Foosball, Reimagined video"></video><div class="noise"></div><div class="top-tag">9:16</div><div class="play-mini"></div><div class="info"><div class="cat">Ad</div><div class="title">Foosball, Reimagined</div></div></div>
-      <div class="reel-card"><video src="Reel%208.mp4" loop playsinline preload="metadata" aria-label="LLC Investing, Simplified video"></video><div class="noise"></div><div class="top-tag">9:16</div><div class="play-mini"></div><div class="info"><div class="cat">Explainer</div><div class="title">LLC Investing, Simplified</div></div></div>
+      <div class="reel-card"><video src="Reel%201.mp4" muted loop playsinline preload="none" aria-label="Celina vs. Prosper video"></video><div class="noise"></div><div class="top-tag">9:16</div><div class="play-mini"></div><div class="info"><div class="cat">Listing</div><div class="title">Celina vs. Prosper</div></div></div>
+      <div class="reel-card"><video src="Reel%202.mp4" muted loop playsinline preload="none" aria-label="Option Period, TX video"></video><div class="noise"></div><div class="top-tag">9:16</div><div class="play-mini"></div><div class="info"><div class="cat">Explainer</div><div class="title">Option Period, TX</div></div></div>
+      <div class="reel-card"><video src="Reel%203.mp4" muted loop playsinline preload="none" aria-label="Fairway-adjacent, Plano video"></video><div class="noise"></div><div class="top-tag">9:16</div><div class="play-mini"></div><div class="info"><div class="cat">Listing</div><div class="title">Fairway‑adjacent, Plano</div></div></div>
+      <div class="reel-card"><video src="Reel%204.mp4" muted loop playsinline preload="none" aria-label="Property Tax, Broken Down video"></video><div class="noise"></div><div class="top-tag">9:16</div><div class="play-mini"></div><div class="info"><div class="cat">Data</div><div class="title">Property Tax, Broken Down</div></div></div>
+      <div class="reel-card"><video src="Reel%205.mp4" muted loop playsinline preload="none" aria-label="Opening Ceremony Teaser video"></video><div class="noise"></div><div class="top-tag">9:16</div><div class="play-mini"></div><div class="info"><div class="cat">Brand</div><div class="title">Opening Ceremony Teaser</div></div></div>
+      <div class="reel-card"><video src="Reel%206.mp4" muted loop playsinline preload="none" aria-label="Senior Nationals Hype video"></video><div class="noise"></div><div class="top-tag">9:16</div><div class="play-mini"></div><div class="info"><div class="cat">Sports</div><div class="title">Senior Nationals Hype</div></div></div>
+      <div class="reel-card"><video src="Reel%207.mp4" muted loop playsinline preload="none" aria-label="Foosball, Reimagined video"></video><div class="noise"></div><div class="top-tag">9:16</div><div class="play-mini"></div><div class="info"><div class="cat">Ad</div><div class="title">Foosball, Reimagined</div></div></div>
+      <div class="reel-card"><video src="Reel%208.mp4" muted loop playsinline preload="none" aria-label="LLC Investing, Simplified video"></video><div class="noise"></div><div class="top-tag">9:16</div><div class="play-mini"></div><div class="info"><div class="cat">Explainer</div><div class="title">LLC Investing, Simplified</div></div></div>
     </div>
   </section>
 
@@ -722,12 +732,63 @@
   }, { threshold: 0.12 });
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-  // Reels play only while their card is hovered.
-  document.querySelectorAll('.reel-card').forEach(card => {
+  // Reels: preload as the grid nears view, play on hover when ready.
+  const reelCards = [...document.querySelectorAll('.reel-card')];
+  const reelVideos = reelCards.map(card => card.querySelector('video')).filter(Boolean);
+  let reelPreloadStarted = false;
+
+  function prepareReelVideo(video) {
+    if (video.dataset.prepared) return;
+    video.dataset.prepared = '1';
+    video.preload = 'auto';
+    video.load();
+  }
+
+  function startReelPreload() {
+    if (reelPreloadStarted) return;
+    reelPreloadStarted = true;
+    reelVideos.forEach((video, i) => {
+      setTimeout(() => prepareReelVideo(video), i * 350);
+    });
+  }
+
+  const reelGrid = document.querySelector('.reel-grid');
+  if (reelGrid) {
+    const reelPreloadObserver = new IntersectionObserver((entries) => {
+      if (entries.some(e => e.isIntersecting)) {
+        startReelPreload();
+        reelPreloadObserver.disconnect();
+      }
+    }, { rootMargin: '500px 0px', threshold: 0 });
+    reelPreloadObserver.observe(reelGrid);
+  }
+
+  function playReel(card, video) {
+    prepareReelVideo(video);
+
+    const begin = () => {
+      video.play()
+        .then(() => card.classList.remove('is-loading'))
+        .catch(() => card.classList.remove('is-loading'));
+    };
+
+    if (video.readyState >= 2) {
+      begin();
+    } else {
+      card.classList.add('is-loading');
+      video.addEventListener('canplay', begin, { once: true });
+    }
+  }
+
+  reelCards.forEach(card => {
     const video = card.querySelector('video');
     if (!video) return;
-    card.addEventListener('mouseenter', () => video.play().catch(() => {}));
-    card.addEventListener('mouseleave', () => video.pause());
+
+    card.addEventListener('mouseenter', () => playReel(card, video));
+    card.addEventListener('mouseleave', () => {
+      card.classList.remove('is-loading');
+      video.pause();
+    });
   });
 </script>
 
