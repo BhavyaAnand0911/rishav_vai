@@ -218,18 +218,43 @@
     border: 1px solid rgba(237,233,224,0.14);
     overflow: hidden;
     box-shadow: 0 30px 60px rgba(0,0,0,0.55);
+    transition:
+      top 0.65s cubic-bezier(0.4, 0, 0.2, 1),
+      right 0.65s cubic-bezier(0.4, 0, 0.2, 1),
+      transform 0.65s cubic-bezier(0.4, 0, 0.2, 1),
+      opacity 0.65s ease;
   }
-  .phone-frame.f1 {
-    top: 0; right: 40px;
-    background: linear-gradient(200deg, #1a2f2f 0%, #0d1615 55%, #05100f 100%);
+  .phone-frame video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background: #0a0e0d;
+  }
+  .phone-frame[data-slot="0"] {
+    top: 0;
+    right: 40px;
+    z-index: 3;
+    opacity: 1;
+    transform: scale(1);
+  }
+  .phone-frame[data-slot="1"] {
+    top: 45px;
+    right: 15px;
     z-index: 2;
+    opacity: 0.85;
+    transform: scale(0.96);
   }
-  .phone-frame.f2 {
-    top: 90px; right: -10px;
-    background: linear-gradient(210deg, #2a2116 0%, #171310 60%, #0a0908 100%);
+  .phone-frame[data-slot="2"] {
+    top: 90px;
+    right: -10px;
     z-index: 1;
     opacity: 0.75;
     transform: scale(0.92);
+  }
+  .phone-frame.is-exiting {
+    z-index: 0 !important;
   }
   .phone-frame .grain-line {
     position: absolute; inset: 0;
@@ -251,21 +276,6 @@
     font-size: 0.85rem;
     color: var(--ink);
     margin-top: 4px;
-  }
-  .phone-frame .play {
-    position: absolute; top: 50%; left: 50%;
-    transform: translate(-50%,-50%);
-    width: 44px; height: 44px;
-    border: 1px solid rgba(237,233,224,0.5);
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .phone-frame .play::after {
-    content: "";
-    border-style: solid;
-    border-width: 6px 0 6px 10px;
-    border-color: transparent transparent transparent var(--ink);
-    margin-left: 3px;
   }
 
   /* ---------- section heads ---------- */
@@ -337,15 +347,6 @@
     position: absolute; inset: 0;
     background: repeating-linear-gradient(180deg, rgba(255,255,255,0.02) 0px, transparent 3px, transparent 6px);
   }
-  .reel-card .top-tag {
-    position: absolute; top: 12px; left: 12px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.6rem;
-    color: var(--gold);
-    background: rgba(10,14,13,0.55);
-    padding: 3px 7px;
-    border-radius: 2px;
-  }
   .reel-card .info {
     position: absolute; bottom: 0; left: 0; right: 0;
     padding: 14px;
@@ -389,6 +390,77 @@
   @keyframes reel-pulse {
     0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.85; }
     50% { transform: translate(-50%, -50%) scale(1.12); opacity: 0.45; }
+  }
+
+  /* ---------- long form videos ---------- */
+  .longform-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+  .longform-item {
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    overflow: hidden;
+    background: var(--bg-panel);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  .longform-item:hover {
+    border-color: rgba(237, 233, 224, 0.16);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+  }
+  .longform-frame {
+    position: relative;
+    background: #0a0e0d;
+  }
+  .longform-frame video {
+    display: block;
+    width: 100%;
+    height: auto;
+    vertical-align: middle;
+    background: #0a0e0d;
+  }
+  .longform-frame .noise {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: repeating-linear-gradient(180deg, rgba(255,255,255,0.02) 0px, transparent 3px, transparent 6px);
+  }
+  .longform-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 24px;
+    padding: 18px 22px;
+    border-top: 1px solid var(--line);
+  }
+  .longform-meta .idx {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    color: var(--gold);
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+  }
+  .longform-meta .cat {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--teal-bright);
+  }
+  .longform-meta .title {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 500;
+    font-size: 1.05rem;
+    margin-top: 4px;
+    color: var(--ink);
+  }
+  .longform-meta .dur {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    color: var(--ink-faint);
+    letter-spacing: 0.06em;
+    white-space: nowrap;
   }
 
   /* ---------- services ---------- */
@@ -537,6 +609,7 @@
     .reel-card { transition: none; will-change: auto; }
     .reel-card:hover { transform: none; box-shadow: none; }
     .reel-card.is-loading .play-mini { animation: none; }
+    .phone-frame { transition: none; }
     html { scroll-behavior: auto; }
   }
 
@@ -556,7 +629,7 @@
 
 <nav>
   <div class="logo">CLICKING<span>_</span>BAD</div>
-  <a href="#contact" class="cta">Start a project</a>
+  <a href="https://wa.me/917351887187" class="cta" target="_blank" rel="noopener">Start a project</a>
 </nav>
 
 <main class="wrap-shift">
@@ -574,16 +647,21 @@
           <div><b>0</b><span>Faces on camera</span></div>
         </div>
       </div>
-      <div class="frame-stack">
-        <div class="phone-frame f2">
+      <div class="frame-stack" id="heroStack">
+        <div class="phone-frame" data-slot="2">
+          <video src="Reel%206.mp4" muted playsinline preload="auto" aria-label="Senior Nationals Hype"></video>
           <div class="grain-line"></div>
-          <div class="play"></div>
-          <div class="hud"><div class="tag">DAY 8 — REEL 13</div><div class="cap">Exterior → interior fly‑through</div></div>
+          <div class="hud"><div class="tag">SPORTS — REEL 06</div><div class="cap">Senior Nationals Hype</div></div>
         </div>
-        <div class="phone-frame f1">
+        <div class="phone-frame" data-slot="1">
+          <video src="Reel%205.mp4" muted playsinline preload="auto" aria-label="Opening Ceremony Teaser"></video>
           <div class="grain-line"></div>
-          <div class="play"></div>
-          <div class="hud"><div class="tag">CLIENT CUT</div><div class="cap">Option Period, explained</div></div>
+          <div class="hud"><div class="tag">BRAND — REEL 05</div><div class="cap">Opening Ceremony Teaser</div></div>
+        </div>
+        <div class="phone-frame" data-slot="0">
+          <video src="Reel%202.mp4" muted playsinline preload="auto" aria-label="Option Period, TX"></video>
+          <div class="grain-line"></div>
+          <div class="hud"><div class="tag">EXPLAINER — REEL 02</div><div class="cap">Option Period, explained</div></div>
         </div>
       </div>
     </div>
@@ -597,14 +675,67 @@
       <p class="head-note">A working sample of the reel formats in rotation — listing walkthroughs, market explainers, and brand spots.</p>
     </div>
     <div class="reel-grid">
-      <div class="reel-card"><video src="Reel%201.mp4" muted loop playsinline preload="none" aria-label="Celina vs. Prosper video"></video><div class="noise"></div><div class="top-tag">9:16</div><div class="play-mini"></div><div class="info"><div class="cat">Listing</div><div class="title">Celina vs. Prosper</div></div></div>
-      <div class="reel-card"><video src="Reel%202.mp4" muted loop playsinline preload="none" aria-label="Option Period, TX video"></video><div class="noise"></div><div class="top-tag">9:16</div><div class="play-mini"></div><div class="info"><div class="cat">Explainer</div><div class="title">Option Period, TX</div></div></div>
-      <div class="reel-card"><video src="Reel%203.mp4" muted loop playsinline preload="none" aria-label="Fairway-adjacent, Plano video"></video><div class="noise"></div><div class="top-tag">9:16</div><div class="play-mini"></div><div class="info"><div class="cat">Listing</div><div class="title">Fairway‑adjacent, Plano</div></div></div>
-      <div class="reel-card"><video src="Reel%204.mp4" muted loop playsinline preload="none" aria-label="Property Tax, Broken Down video"></video><div class="noise"></div><div class="top-tag">9:16</div><div class="play-mini"></div><div class="info"><div class="cat">Data</div><div class="title">Property Tax, Broken Down</div></div></div>
-      <div class="reel-card"><video src="Reel%205.mp4" muted loop playsinline preload="none" aria-label="Opening Ceremony Teaser video"></video><div class="noise"></div><div class="top-tag">9:16</div><div class="play-mini"></div><div class="info"><div class="cat">Brand</div><div class="title">Opening Ceremony Teaser</div></div></div>
-      <div class="reel-card"><video src="Reel%206.mp4" muted loop playsinline preload="none" aria-label="Senior Nationals Hype video"></video><div class="noise"></div><div class="top-tag">9:16</div><div class="play-mini"></div><div class="info"><div class="cat">Sports</div><div class="title">Senior Nationals Hype</div></div></div>
-      <div class="reel-card"><video src="Reel%207.mp4" muted loop playsinline preload="none" aria-label="Foosball, Reimagined video"></video><div class="noise"></div><div class="top-tag">9:16</div><div class="play-mini"></div><div class="info"><div class="cat">Ad</div><div class="title">Foosball, Reimagined</div></div></div>
-      <div class="reel-card"><video src="Reel%208.mp4" muted loop playsinline preload="none" aria-label="LLC Investing, Simplified video"></video><div class="noise"></div><div class="top-tag">9:16</div><div class="play-mini"></div><div class="info"><div class="cat">Explainer</div><div class="title">LLC Investing, Simplified</div></div></div>
+      <div class="reel-card"><video src="Reel%201.mp4" muted loop playsinline preload="none" aria-label="Celina vs. Prosper video"></video><div class="noise"></div><div class="play-mini"></div><div class="info"><div class="cat">Listing</div><div class="title">Celina vs. Prosper</div></div></div>
+      <div class="reel-card"><video src="Reel%202.mp4" muted loop playsinline preload="none" aria-label="Option Period, TX video"></video><div class="noise"></div><div class="play-mini"></div><div class="info"><div class="cat">Explainer</div><div class="title">Option Period, TX</div></div></div>
+      <div class="reel-card"><video src="Reel%203.mp4" muted loop playsinline preload="none" aria-label="Fairway-adjacent, Plano video"></video><div class="noise"></div><div class="play-mini"></div><div class="info"><div class="cat">Listing</div><div class="title">Fairway‑adjacent, Plano</div></div></div>
+      <div class="reel-card"><video src="Reel%204.mp4" muted loop playsinline preload="none" aria-label="Property Tax, Broken Down video"></video><div class="noise"></div><div class="play-mini"></div><div class="info"><div class="cat">Data</div><div class="title">Property Tax, Broken Down</div></div></div>
+      <div class="reel-card"><video src="Reel%205.mp4" muted loop playsinline preload="none" aria-label="Opening Ceremony Teaser video"></video><div class="noise"></div><div class="play-mini"></div><div class="info"><div class="cat">Brand</div><div class="title">Opening Ceremony Teaser</div></div></div>
+      <div class="reel-card"><video src="Reel%206.mp4" muted loop playsinline preload="none" aria-label="Senior Nationals Hype video"></video><div class="noise"></div><div class="play-mini"></div><div class="info"><div class="cat">Sports</div><div class="title">Senior Nationals Hype</div></div></div>
+      <div class="reel-card"><video src="Reel%207.mp4" muted loop playsinline preload="none" aria-label="Foosball, Reimagined video"></video><div class="noise"></div><div class="play-mini"></div><div class="info"><div class="cat">Ad</div><div class="title">Foosball, Reimagined</div></div></div>
+      <div class="reel-card"><video src="Reel%208.mp4" muted loop playsinline preload="none" aria-label="LLC Investing, Simplified video"></video><div class="noise"></div><div class="play-mini"></div><div class="info"><div class="cat">Explainer</div><div class="title">LLC Investing, Simplified</div></div></div>
+    </div>
+  </section>
+
+  <!-- LONG FORM -->
+  <section id="longform" class="wrap reveal">
+    <div class="timecode mono">00:00:48 — LONG FORM</div>
+    <div class="head-row">
+      <h2 class="display">LONG<br>CUTS</h2>
+      <p class="head-note">Extended edits and full-length pieces — horizontal format, stacked for deeper storytelling beyond the scroll.</p>
+    </div>
+    <div class="longform-stack">
+      <article class="longform-item">
+        <div class="longform-frame">
+          <video src="Reel%209%20-%20Long%20form.mp4" controls playsinline preload="none" aria-label="Long form video 9"></video>
+          <div class="noise"></div>
+        </div>
+        <div class="longform-meta">
+          <div>
+            <div class="idx mono">LF — 09</div>
+            <div class="cat">Extended</div>
+            <div class="title">Long Form Cut 09</div>
+          </div>
+          <span class="dur mono">FULL LENGTH</span>
+        </div>
+      </article>
+      <article class="longform-item">
+        <div class="longform-frame">
+          <video src="Reel%2010-%20Long%20form.mp4" controls playsinline preload="none" aria-label="Long form video 10"></video>
+          <div class="noise"></div>
+        </div>
+        <div class="longform-meta">
+          <div>
+            <div class="idx mono">LF — 10</div>
+            <div class="cat">Extended</div>
+            <div class="title">Long Form Cut 10</div>
+          </div>
+          <span class="dur mono">FULL LENGTH</span>
+        </div>
+      </article>
+      <article class="longform-item">
+        <div class="longform-frame">
+          <video src="Reel%2011%20-%20Long%20form.mp4" controls playsinline preload="none" aria-label="Long form video 11"></video>
+          <div class="noise"></div>
+        </div>
+        <div class="longform-meta">
+          <div>
+            <div class="idx mono">LF — 11</div>
+            <div class="cat">Extended</div>
+            <div class="title">Long Form Cut 11</div>
+          </div>
+          <span class="dur mono">FULL LENGTH</span>
+        </div>
+      </article>
     </div>
   </section>
 
@@ -732,6 +863,74 @@
   }, { threshold: 0.12 });
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
+  // Hero stack: 3 reels auto-play, rotate to back when finished.
+  (function initHeroStack() {
+    const stack = document.getElementById('heroStack');
+    if (!stack) return;
+
+    const frames = [...stack.querySelectorAll('.phone-frame')].map(el => ({
+      el,
+      video: el.querySelector('video'),
+      slot: Number(el.dataset.slot),
+    }));
+
+    let rotating = false;
+    const ROTATE_MS = 650;
+
+    function applySlots() {
+      frames.forEach(f => { f.el.dataset.slot = f.slot; });
+    }
+
+    function getFrontFrame() {
+      return frames.find(f => f.slot === 0);
+    }
+
+    function playFront() {
+      const front = getFrontFrame();
+      if (!front || !front.video) return;
+
+      frames.forEach(f => {
+        if (f !== front) {
+          f.video.pause();
+          f.video.currentTime = 0;
+        }
+      });
+
+      const start = () => front.video.play().catch(() => {});
+      if (front.video.readyState >= 2) start();
+      else front.video.addEventListener('canplay', start, { once: true });
+    }
+
+    function rotateStack() {
+      if (rotating) return;
+      rotating = true;
+
+      const front = getFrontFrame();
+      if (front) {
+        front.el.classList.add('is-exiting');
+        front.video.pause();
+        front.video.currentTime = 0;
+      }
+
+      frames.forEach(f => { f.slot = (f.slot - 1 + 3) % 3; });
+      applySlots();
+
+      setTimeout(() => {
+        if (front) front.el.classList.remove('is-exiting');
+        rotating = false;
+        playFront();
+      }, ROTATE_MS);
+    }
+
+    frames.forEach(f => {
+      if (!f.video) return;
+      f.video.addEventListener('ended', rotateStack);
+    });
+
+    applySlots();
+    playFront();
+  })();
+
   // Reels: preload as the grid nears view, play on hover when ready.
   const reelCards = [...document.querySelectorAll('.reel-card')];
   const reelVideos = reelCards.map(card => card.querySelector('video')).filter(Boolean);
@@ -790,6 +989,23 @@
       video.pause();
     });
   });
+
+  // Long form: stagger preload when section nears view.
+  const longformSection = document.getElementById('longform');
+  const longformVideos = longformSection
+    ? [...longformSection.querySelectorAll('video')]
+    : [];
+
+  if (longformSection && longformVideos.length) {
+    const longformObserver = new IntersectionObserver((entries) => {
+      if (!entries.some(e => e.isIntersecting)) return;
+      longformVideos.forEach((video, i) => {
+        setTimeout(() => prepareReelVideo(video), i * 500);
+      });
+      longformObserver.disconnect();
+    }, { rootMargin: '400px 0px', threshold: 0 });
+    longformObserver.observe(longformSection);
+  }
 </script>
 
 </body>
