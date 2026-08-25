@@ -7,6 +7,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="preload" as="video" href="Reel%201.mp4" type="video/mp4">
+<link rel="preload" as="video" href="Reel%202.mp4" type="video/mp4">
 <style>
   :root {
     --bg: #0a0e0d;
@@ -499,6 +501,11 @@
     background: var(--ink);
     box-shadow: 8px 0 0 var(--ink);
   }
+  .longform-frame.is-loading .longform-toggle {
+    opacity: 1;
+    border-color: var(--gold);
+    animation: reel-pulse 0.9s ease-in-out infinite;
+  }
   @media (hover: none) {
     .longform-toggle { opacity: 1; }
   }
@@ -685,6 +692,7 @@
     .reel-card { transition: none; will-change: auto; }
     .reel-card:hover { transform: none; box-shadow: none; }
     .reel-card.is-loading .reel-toggle { animation: none; }
+    .longform-frame.is-loading .longform-toggle { animation: none; }
     .phone-frame { transition: none; }
     html { scroll-behavior: auto; }
   }
@@ -751,14 +759,14 @@
       <p class="head-note">A working sample of the reel formats in rotation — listing walkthroughs, market explainers, and brand spots.</p>
     </div>
     <div class="reel-grid">
-      <div class="reel-card"><video src="Reel%201.mp4"   loop playsinline preload="none" aria-label="Celina vs. Prosper video"></video><div class="noise"></div><button type="button" class="reel-toggle" aria-label="Play video"><span class="reel-toggle-icon"></span></button><div class="info"><div class="cat">Listing</div><div class="title">Celina vs. Prosper</div></div></div>
-      <div class="reel-card"><video src="Reel%202.mp4"  loop playsinline preload="none" aria-label="Option Period, TX video"></video><div class="noise"></div><button type="button" class="reel-toggle" aria-label="Play video"><span class="reel-toggle-icon"></span></button><div class="info"><div class="cat">Explainer</div><div class="title">Option Period, TX</div></div></div>
-      <div class="reel-card"><video src="Reel%203.mp4"  loop playsinline preload="none" aria-label="Fairway-adjacent, Plano video"></video><div class="noise"></div><button type="button" class="reel-toggle" aria-label="Play video"><span class="reel-toggle-icon"></span></button><div class="info"><div class="cat">Listing</div><div class="title">Fairway‑adjacent, Plano</div></div></div>
-      <div class="reel-card"><video src="Reel%204.mp4"  loop playsinline preload="none" aria-label="Property Tax, Broken Down video"></video><div class="noise"></div><button type="button" class="reel-toggle" aria-label="Play video"><span class="reel-toggle-icon"></span></button><div class="info"><div class="cat">Data</div><div class="title">Property Tax, Broken Down</div></div></div>
-      <div class="reel-card"><video src="Reel%205.mp4"  loop playsinline preload="none" aria-label="Opening Ceremony Teaser video"></video><div class="noise"></div><button type="button" class="reel-toggle" aria-label="Play video"><span class="reel-toggle-icon"></span></button><div class="info"><div class="cat">Brand</div><div class="title">Opening Ceremony Teaser</div></div></div>
-      <div class="reel-card"><video src="Reel%206.mp4"  loop playsinline preload="none" aria-label="Senior Nationals Hype video"></video><div class="noise"></div><button type="button" class="reel-toggle" aria-label="Play video"><span class="reel-toggle-icon"></span></button><div class="info"><div class="cat">Sports</div><div class="title">Senior Nationals Hype</div></div></div>
-      <div class="reel-card"><video src="Reel%207.mp4"  loop playsinline preload="none" aria-label="Foosball, Reimagined video"></video><div class="noise"></div><button type="button" class="reel-toggle" aria-label="Play video"><span class="reel-toggle-icon"></span></button><div class="info"><div class="cat">Ad</div><div class="title">Foosball, Reimagined</div></div></div>
-      <div class="reel-card"><video src="Reel%208.mp4"  loop playsinline preload="none" aria-label="LLC Investing, Simplified video"></video><div class="noise"></div><button type="button" class="reel-toggle" aria-label="Play video"><span class="reel-toggle-icon"></span></button><div class="info"><div class="cat">Explainer</div><div class="title">LLC Investing, Simplified</div></div></div>
+      <div class="reel-card"><video src="Reel%201.mp4" muted loop playsinline preload="metadata" aria-label="Celina vs. Prosper video"></video><div class="noise"></div><button type="button" class="reel-toggle" aria-label="Play video"><span class="reel-toggle-icon"></span></button><div class="info"><div class="cat">Listing</div><div class="title">Celina vs. Prosper</div></div></div>
+      <div class="reel-card"><video src="Reel%202.mp4" muted loop playsinline preload="metadata" aria-label="Option Period, TX video"></video><div class="noise"></div><button type="button" class="reel-toggle" aria-label="Play video"><span class="reel-toggle-icon"></span></button><div class="info"><div class="cat">Explainer</div><div class="title">Option Period, TX</div></div></div>
+      <div class="reel-card"><video src="Reel%203.mp4" muted loop playsinline preload="metadata" aria-label="Fairway-adjacent, Plano video"></video><div class="noise"></div><button type="button" class="reel-toggle" aria-label="Play video"><span class="reel-toggle-icon"></span></button><div class="info"><div class="cat">Listing</div><div class="title">Fairway‑adjacent, Plano</div></div></div>
+      <div class="reel-card"><video src="Reel%204.mp4" muted loop playsinline preload="metadata" aria-label="Property Tax, Broken Down video"></video><div class="noise"></div><button type="button" class="reel-toggle" aria-label="Play video"><span class="reel-toggle-icon"></span></button><div class="info"><div class="cat">Data</div><div class="title">Property Tax, Broken Down</div></div></div>
+      <div class="reel-card"><video src="Reel%205.mp4" muted loop playsinline preload="metadata" aria-label="Opening Ceremony Teaser video"></video><div class="noise"></div><button type="button" class="reel-toggle" aria-label="Play video"><span class="reel-toggle-icon"></span></button><div class="info"><div class="cat">Brand</div><div class="title">Opening Ceremony Teaser</div></div></div>
+      <div class="reel-card"><video src="Reel%206.mp4" muted loop playsinline preload="metadata" aria-label="Senior Nationals Hype video"></video><div class="noise"></div><button type="button" class="reel-toggle" aria-label="Play video"><span class="reel-toggle-icon"></span></button><div class="info"><div class="cat">Sports</div><div class="title">Senior Nationals Hype</div></div></div>
+      <div class="reel-card"><video src="Reel%207.mp4" muted loop playsinline preload="metadata" aria-label="Foosball, Reimagined video"></video><div class="noise"></div><button type="button" class="reel-toggle" aria-label="Play video"><span class="reel-toggle-icon"></span></button><div class="info"><div class="cat">Ad</div><div class="title">Foosball, Reimagined</div></div></div>
+      <div class="reel-card"><video src="Reel%208.mp4" muted loop playsinline preload="metadata" aria-label="LLC Investing, Simplified video"></video><div class="noise"></div><button type="button" class="reel-toggle" aria-label="Play video"><span class="reel-toggle-icon"></span></button><div class="info"><div class="cat">Explainer</div><div class="title">LLC Investing, Simplified</div></div></div>
     </div>
   </section>
 
@@ -772,7 +780,7 @@
     <div class="longform-stack">
       <article class="longform-item">
         <div class="longform-frame">
-          <video src="Reel%209%20-%20Long%20form.mp4" playsinline preload="none" aria-label="Long form video 9"></video>
+          <video src="Reel%209%20-%20Long%20form.mp4" playsinline preload="metadata" aria-label="Long form video 9"></video>
           <button type="button" class="longform-toggle" aria-label="Play video"><span class="longform-toggle-icon"></span></button>
           <div class="noise"></div>
         </div>
@@ -787,7 +795,7 @@
       </article>
       <article class="longform-item">
         <div class="longform-frame">
-          <video src="Reel%2010-%20Long%20form.mp4" playsinline preload="none" aria-label="Long form video 10"></video>
+          <video src="Reel%2010-%20Long%20form.mp4" playsinline preload="metadata" aria-label="Long form video 10"></video>
           <button type="button" class="longform-toggle" aria-label="Play video"><span class="longform-toggle-icon"></span></button>
           <div class="noise"></div>
         </div>
@@ -802,7 +810,7 @@
       </article>
       <article class="longform-item">
         <div class="longform-frame">
-          <video src="Reel%2011%20-%20Long%20form.mp4" playsinline preload="none" aria-label="Long form video 11"></video>
+          <video src="Reel%2011%20-%20Long%20form.mp4" playsinline preload="metadata" aria-label="Long form video 11"></video>
           <button type="button" class="longform-toggle" aria-label="Play video"><span class="longform-toggle-icon"></span></button>
           <div class="noise"></div>
         </div>
@@ -1034,92 +1042,99 @@
     playFront();
   })();
 
-  // Reels: preload as the grid nears view, click play/pause on hover toggle.
+  // Reels & long form: hover to play, pause on leave, toggle on click. Eager preload.
   const reelCards = [...document.querySelectorAll('.reel-card')];
   const reelVideos = reelCards.map(card => card.querySelector('video')).filter(Boolean);
-  let reelPreloadStarted = false;
+  const longformSection = document.getElementById('longform');
+  const longformFrames = longformSection
+    ? [...longformSection.querySelectorAll('.longform-frame')]
+    : [];
+  const longformVideos = longformFrames.map(frame => frame.querySelector('video')).filter(Boolean);
 
-  function prepareReelVideo(video) {
-    if (video.dataset.prepared) return;
+  function prepareVideo(video) {
+    if (!video || video.dataset.prepared === '1') return;
     video.dataset.prepared = '1';
     video.preload = 'auto';
     video.load();
   }
 
-  function startReelPreload() {
-    if (reelPreloadStarted) return;
-    reelPreloadStarted = true;
-    reelVideos.forEach((video, i) => {
-      setTimeout(() => prepareReelVideo(video), i * 350);
-    });
+  function startPlayback(container, video) {
+    prepareVideo(video);
+
+    const begin = () => {
+      video.play()
+        .then(() => syncVideoState(container, video))
+        .catch(() => syncVideoState(container, video));
+    };
+
+    if (video.readyState >= 2) {
+      begin();
+    } else {
+      container.classList.add('is-loading');
+      video.addEventListener('canplay', begin, { once: true });
+    }
   }
 
-  const reelGrid = document.querySelector('.reel-grid');
-  if (reelGrid) {
-    const reelPreloadObserver = new IntersectionObserver((entries) => {
-      if (entries.some(e => e.isIntersecting)) {
-        startReelPreload();
-        reelPreloadObserver.disconnect();
-      }
-    }, { rootMargin: '500px 0px', threshold: 0 });
-    reelPreloadObserver.observe(reelGrid);
+  function syncVideoState(container, video) {
+    const btn = container.querySelector('.reel-toggle, .longform-toggle');
+    container.classList.toggle('is-playing', !video.paused && !video.ended);
+    container.classList.remove('is-loading');
+    if (btn) {
+      btn.setAttribute('aria-label', video.paused || video.ended ? 'Play video' : 'Pause video');
+    }
   }
 
-  function initVideoToggle(container, btn) {
+  function initVideoToggle(container) {
     const video = container.querySelector('video');
+    const btn = container.querySelector('.reel-toggle, .longform-toggle');
     if (!video || !btn) return;
 
-    function syncState() {
-      container.classList.toggle('is-playing', !video.paused && !video.ended);
-      btn.setAttribute('aria-label', video.paused || video.ended ? 'Play video' : 'Pause video');
+    container.addEventListener('mouseenter', () => startPlayback(container, video));
+    container.addEventListener('mouseleave', () => {
       container.classList.remove('is-loading');
-    }
+      video.pause();
+      syncVideoState(container, video);
+    });
 
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
-      prepareReelVideo(video);
-
       if (video.paused || video.ended) {
         if (video.ended) video.currentTime = 0;
-        const begin = () => video.play().then(syncState).catch(syncState);
-        if (video.readyState >= 2) begin();
-        else {
-          container.classList.add('is-loading');
-          video.addEventListener('canplay', begin, { once: true });
-        }
+        startPlayback(container, video);
       } else {
         video.pause();
-        syncState();
+        syncVideoState(container, video);
       }
     });
 
-    video.addEventListener('play', syncState);
-    video.addEventListener('pause', syncState);
-    video.addEventListener('ended', syncState);
+    video.addEventListener('play', () => syncVideoState(container, video));
+    video.addEventListener('pause', () => syncVideoState(container, video));
+    video.addEventListener('ended', () => syncVideoState(container, video));
   }
 
-  reelCards.forEach(card => initVideoToggle(card, card.querySelector('.reel-toggle')));
-
-  // Long form: stagger preload when section nears view.
-  const longformSection = document.getElementById('longform');
-  const longformVideos = longformSection
-    ? [...longformSection.querySelectorAll('video')]
-    : [];
-
-  if (longformSection && longformVideos.length) {
-    const longformObserver = new IntersectionObserver((entries) => {
-      if (!entries.some(e => e.isIntersecting)) return;
-      longformVideos.forEach((video, i) => {
-        setTimeout(() => prepareReelVideo(video), i * 500);
-      });
-      longformObserver.disconnect();
-    }, { rootMargin: '400px 0px', threshold: 0 });
-    longformObserver.observe(longformSection);
-  }
-
-  document.querySelectorAll('.longform-frame').forEach(frame => {
-    initVideoToggle(frame, frame.querySelector('.longform-toggle'));
+  // Preload immediately: first reels right away, rest staggered.
+  reelVideos.slice(0, 4).forEach(prepareVideo);
+  reelVideos.slice(4).forEach((video, i) => {
+    setTimeout(() => prepareVideo(video), (i + 1) * 100);
   });
+  longformVideos.forEach((video, i) => {
+    setTimeout(() => prepareVideo(video), 500 + i * 150);
+  });
+
+  // Boost preload when cards scroll near the viewport.
+  const videoWarmObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        prepareVideo(entry.target.querySelector('video'));
+      }
+    });
+  }, { rootMargin: '400px 0px', threshold: 0 });
+
+  reelCards.forEach(card => videoWarmObserver.observe(card));
+  longformFrames.forEach(frame => videoWarmObserver.observe(frame));
+
+  reelCards.forEach(card => initVideoToggle(card));
+  longformFrames.forEach(frame => initVideoToggle(frame));
 </script>
 
 </body>
